@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration>
+
+	<!-- Log to a file that rolls daily. -->
+	<appender name="Daily" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="./logs/bookyourads-1-Log.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %c{1}(%M:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="DEBUG" />
+			<param name="levelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+
+	<!-- Log to standard out -->
+	<appender name="StdOut" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p  %c{1}(%M:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- Log only errors to a separate log file that rolls -->
+	<appender name="Error" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="./logs/bookyourads-1-Error.log" />
+		<param name="MaxFileSize" value="100KB" />
+		<param name="MaxBackupIndex" value="5" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %c{1}(%M:%L) - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="WARN" />
+			<param name="levelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<!-- Only send INFO or higher to appenders for Spring and Apache -->
+	<logger name="org.springframework">
+		<level value="debug" />
+	</logger>
+	<logger name="org.apache">
+		<level value="info" />
+	</logger>
+	<logger name="org.hibernate">
+		<level value="info" />
+	</logger>
+
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="StdOut"/>
+		<appender-ref ref="Daily" />
+		<appender-ref ref="Error" />
+	</root>
+
+</log4j:configuration>
